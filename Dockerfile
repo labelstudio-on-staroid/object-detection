@@ -16,6 +16,13 @@ RUN pip uninstall pycocotools mmpycocotools -y && \
 # init ml backend
 RUN label-studio-ml init coco-detector --from label-studio/label_studio/ml/examples/mmdetection/mmdetection.py
 
+# copy configs/_base_ dir
+RUN git clone https://github.com/open-mmlab/mmdetection.git && \
+    cd mmdetection && \
+    git checkout v2.9.0 && \
+    mv configs/_base_ ../ && \
+    cd .. && rm -rf mmdetection
+
 # download config and checkpoint file
 RUN mkdir /workspace/configs && mkdir /workspace/checkpoints && \
     curl https://raw.githubusercontent.com/open-mmlab/mmdetection/master/configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py > /workspace/configs/faster_rcnn_r50_fpn_1x_coco.py && \
