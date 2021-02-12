@@ -27,8 +27,8 @@ spec:
         - "-c"
         - >-
           label-studio-ml start coco-detector --with
-          config_file=/configs/faster_rcnn_r50_fpn_1x_coco.py
-          checkpoint_file=/checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth
+          config_file=/workspace/configs/faster_rcnn_r50_fpn_1x_coco.py
+          checkpoint_file=/workspace/checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth
           score_threshold=${SCORE_THRESHOLD}
           device=$( echo "$DEVICE" | grep gpu > /dev/null && echo "gpu:0" || echo "cpu")
         env:
