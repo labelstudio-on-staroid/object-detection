@@ -25,5 +25,5 @@ see https://labelstud.io/tutorials/object-detector.html#The-full-list-of-COCO-la
 Run locally with
 
 ```
-skaffold dev --port-forward
+skaffold dev -pminikube --port-forward
 ```

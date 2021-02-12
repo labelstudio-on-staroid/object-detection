@@ -9,8 +9,8 @@ RUN git clone https://github.com/heartexlabs/label-studio && \
     pip install -e .
 
 # uninstall pycocotools and reinstall mmpycocotools.
-RUN pip install -r label-studio/label_studio/ml/examples/mmdetection/requirements.txt && \
-    pip uninstall pycocotools mmpycocotools -y && \
+#RUN pip install -r label-studio/label_studio/ml/examples/mmdetection/requirements.txt && \
+RUN pip uninstall pycocotools mmpycocotools -y && \
     pip install mmpycocotools requests==2.22.0
 
 # init ml backend

@@ -16,7 +16,7 @@ spec:
         app: object-detection
         pod.staroid.com/isolation: dedicated
         pod.staroid.com/instance-type: standard-4
-        pod.staroid.com/spot: false
+        pod.staroid.com/spot: "false"
     spec:
       serviceAccountName: root
       containers:
@@ -26,14 +26,14 @@ spec:
         - "bash"
         - "-c"
         - >-
-          cd label-studio && label-studio-ml start coco-detector --with
+          label-studio-ml start coco-detector --with
           config_file=/configs/faster_rcnn_r50_fpn_1x_coco.py
           checkpoint_file=/checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth
           score_threshold=${SCORE_THRESHOLD}
           device=$( echo "$DEVICE" | grep gpu > /dev/null && echo "gpu:0" || echo "cpu")
         env:
         - name: SCORE_THRESHOLD
-          value: 0.5
+          value: "0.5"
         - name: DEVICE
           value: "standard-4"
 ---
