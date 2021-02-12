@@ -19,7 +19,6 @@ RUN label-studio-ml init coco-detector --from label-studio/label_studio/ml/examp
 # copy configs/_base_ dir
 RUN git clone https://github.com/open-mmlab/mmdetection.git && \
     cd mmdetection && \
-    git checkout v2.9.0 && \
     mv configs/_base_ ../ && \
     cd .. && rm -rf mmdetection
 
