@@ -1,0 +1,49 @@
+# Kubernetes manifests for label studio
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: object-detection
+spec:
+  replicas: 1
+  strategy:
+    type: "Recreate"
+  selector:
+    matchLabels:
+      app: object-detection
+  template:
+    metadata:
+      labels:
+        app: object-detection
+        pod.staroid.com/isolation: dedicated
+        pod.staroid.com/instance-type: standard-4
+        pod.staroid.com/spot: false
+    spec:
+      serviceAccountName: root
+      containers:
+      - name: object-detection
+        image: object-detection
+        command:
+        - "bash"
+        - "-c"
+        - >-
+          cd label-studio && label-studio-ml start coco-detector --with
+          config_file=/configs/faster_rcnn_r50_fpn_1x_coco.py
+          checkpoint_file=/checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth
+          score_threshold=${SCORE_THRESHOLD}
+          device=$( echo "$DEVICE" | grep gpu > /dev/null && echo "gpu:0" || echo "cpu")
+        env:
+        - name: SCORE_THRESHOLD
+          value: 0.5
+        - name: DEVICE
+          value: "standard-4"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: object-detection
+spec:
+  ports:
+  - name: http
+    port: 9090
+  selector:
+    app: object-detection

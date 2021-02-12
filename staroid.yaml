@@ -1,0 +1,38 @@
+# This file instructs Staroid how to build and launch the project.
+# See https://docs.staroid.com/references/staroid_yaml.html for reference.
+apiVersion: beta/v1
+starRank:
+  rate: 1.0
+build:
+  skaffold:
+    file: skaffold.yaml
+ingress:
+- serviceName: object-detection
+  port: 9090
+  hideOpenButton: true
+deploy:
+  implements: labelstudio-on-staroid/ml-backend
+  paramGroups:
+  - name: Configuration
+    collapsed: false
+    params:
+    - name: "Score threshold"
+      type: NUMBER
+      optional: false
+      defaultValue: "0.5"
+      description: "lower values increase sensitivity but produce more noise."
+      paths:
+      - Deployment:object-detection:spec.template.spec.containers[0].env[0].value
+    - name: "Device"
+      type: STRING
+      description: gpu will significantly speed up image prelabeling.
+      optional: false
+      defaultValue: "standard-4"
+      options:
+      - name: cpu
+        value: "standard-4"
+      - name: gpu
+        value: "gpu-1"
+      paths:
+      - Deployment:object-detection:spec.template.metadata.labels["pod.staroid.com/instance-type"]
+      - Deployment:object-detection:spec.template.spec.containers[0].env[1].value
